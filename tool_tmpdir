@@ -1,0 +1,23 @@
+DSHELL_TMPDIR="${TMPDIR}/dshell-$(set -e; id -u)/launcher_logs"
+readonly DSHELL_TMPDIR
+mkdir -p "${DSHELL_TMPDIR}"
+
+# For the `mv $TOOL_TMPDIR/dshell $TOOL_DIR` to be atomic (i.e. just inode renames),
+# the source and destination filesystems need to be the same
+TOOL_TMPDIR=$(mktemp -d "${CLI_DIR}/tmp.XXXXXXXXXX")
+readonly TOOL_TMPDIR
+
+cleanup() {
+  rm -rf "${TOOL_TMPDIR}"
+  if [[ "$1" == "0" ]]; then
+    rm -rf "${DSHELL_TMPDIR}"
+  fi
+}
+trap 'cleanup $?' EXIT
+
+# e.g. 2022-02-16-20-40-31-0800
+dt_str() { date +"%Y-%m-%d-%H-%M-%S%z"; }
+
+LAUNCHER_TMPDIR="${TOOL_TMPDIR}/launcher"
+readonly LAUNCHER_TMPDIR
+mkdir -p "${LAUNCHER_TMPDIR}"
