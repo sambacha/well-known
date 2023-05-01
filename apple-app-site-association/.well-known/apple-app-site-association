@@ -1,0 +1,15 @@
+{
+  "applinks" : {
+    "apps" : [
+
+    ],
+    "details" : [
+      {
+        "appID" : "${COM.NAME.SPACE}",
+        "paths" : [
+          "*"
+        ]
+      }
+    ]
+  }
+}
